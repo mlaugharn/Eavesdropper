@@ -1,3 +1,3 @@
 A screenshot to feast your eyes upon:
 
-![Screenshot](http://i.imgur.com/LvB0c.png)
+![Screenshot](http://i.imgur.com/1de55.png)
