@@ -44,9 +44,9 @@ def usersHTML():
   output += """
   </table>
   <footer>
-    Made by <a href="github.com/mlaugharn" alt="Marc Laugharn">mlaugharn</a><br />
+    Made by <a href="http://github.com/mlaugharn" alt="Marc Laugharn">mlaugharn</a> and <a href="http://github.com/atamis" alt="Andrew Amis">atamis</a><br>
 """
-  output += str(datetime.datetime.now())
+  output += "Generated at " + str(datetime.datetime.now())
   output += """
   </footer>
   <script type="text/javascript">
