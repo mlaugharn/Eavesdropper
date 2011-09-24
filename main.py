@@ -1,10 +1,20 @@
 import bottle, json, urllib
 
-mumbleJSON = json.loads(urllib.urlopen("http://aypsela.servegame.com/mumble-django/mumble/embed/1.json").read())
 users = []
 
-for user in mumbleJSON['root']['users']:
-  users.append([user['name'], user['selfMute'], user['selfDeaf'], user['userid']])
+@bottle.route('/static/:filename')
+def send_image(filename):
+    return bottle.static_file(filename, root='./static')
+
+@bottle.route('/')
+def index():
+  global users
+  users = []
+  mumbleJSON = json.loads(urllib.urlopen("http://aypsela.servegame.com/mumble-django/mumble/embed/1.json").read())
+  for user in mumbleJSON['root']['users']:
+    users.append([user['name'], user['selfMute'], user['selfDeaf'], user['userid']])
+  output = usersHTML()
+  return output
 
 def usersHTML():
   output = """
@@ -24,6 +34,7 @@ def usersHTML():
     </tr>
 """
   for user in users:
+    print users
     output += "<tr><td><h1>" + user[0] + "</h1>"
     output += "</td><td>"
     output += '<img src="/static/heart.png" alt="Registered"' if (user[3]) > 0 else ''
@@ -39,13 +50,5 @@ def usersHTML():
 </html>"""
   return output
 
-
-@bottle.route('/static/:filename')
-def send_image(filename):
-    return bottle.static_file(filename, root='./static')
-
-@bottle.route('/')
-def index():
-  return usersHTML()
-
+bottle.debug(True)
 bottle.run(host="0.0.0.0", port=9333)

@@ -17,6 +17,10 @@ td, th {
 	margin: 0;
 }
 
+th {
+	text-shadow: none;
+}
+
 tr {
 	border-style: solid;
 	border-width: 1px 0;
