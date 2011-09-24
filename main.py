@@ -1,12 +1,12 @@
-import bottle, json, urllib
+import bottle, json, urllib, datetime
 
-mumbleJSON = json.loads(urllib.urlopen("http://aypsela.servegame.com/mumble-django/mumble/embed/1.json").read())
-users = []
-
-for user in mumbleJSON['root']['users']:
-  users.append([user['name'], user['selfMute'], user['selfDeaf'], user['userid']])
 
 def usersHTML():
+  mumbleJSON = json.loads(urllib.urlopen("http://aypsela.servegame.com/mumble-django/mumble/embed/1.json").read())
+  users = []
+
+  for user in mumbleJSON['root']['users']:
+    users.append([user['name'], user['selfMute'], user['selfDeaf'], user['userid']])
   output = """
 <!DOCTYPE html>
 <html>
@@ -33,8 +33,19 @@ def usersHTML():
   output += """
   </table>
   <footer>
-    Made by <a href="github.com/mlaugharn" alt="Marc Laugharn">mlaugharn</a>
+    Made by <a href="github.com/mlaugharn" alt="Marc Laugharn">mlaugharn</a><br
+    />
+    """
+  output += str(datetime.datetime.now())
+  output += """
   </footer>
+  <script type="text/javascript">
+    function reFresh() {
+      location.reload(true)
+    }
+    window.setInterval("reFresh()",10000);
+
+  </script>
 </body>
 </html>"""
   return output
