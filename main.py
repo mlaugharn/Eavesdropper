@@ -1,4 +1,4 @@
-import bottle, json, urllib
+import bottle, json, urllib, datetime
 
 users = []
 
@@ -44,8 +44,17 @@ def usersHTML():
   output += """
   </table>
   <footer>
-    Made by <a href="github.com/mlaugharn" alt="Marc Laugharn">mlaugharn</a>
+    Made by <a href="github.com/mlaugharn" alt="Marc Laugharn">mlaugharn</a><br />
+"""
+  output += str(datetime.datetime.now())
+  output += """
   </footer>
+  <script type="text/javascript">
+    function reFresh() {
+      location.reload(true)
+    }
+    window.setInterval("reFresh()",10000);
+  </script>
 </body>
 </html>"""
   return output
