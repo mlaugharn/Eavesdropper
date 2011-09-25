@@ -86,7 +86,7 @@ def usersHTML(channel='root'):
     function reFresh() {
       location.reload(true)
     }
-    window.setInterval("reFresh()",10000);
+    window.setInterval("reFresh()",60000);
   </script>
 </body>
 </html>"""
