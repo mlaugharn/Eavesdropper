@@ -1,6 +1,18 @@
 import bottle, json, urllib, datetime
 
+# http://stackoverflow.com/questions/775049/python-time-seconds-to-hms
+def GetInHMS(seconds):
+    hours = seconds / 3600
+    seconds -= 3600*hours
+    minutes = seconds / 60
+    seconds -= 60*minutes
+    if hours == 0:
+        return "%02d:%02d" % (minutes, seconds)
+    return "%02d:%02d:%02d" % (hours, minutes, seconds)
+
+
 users = []
+server_info = {}
 mumbleJSON = None
 
 @bottle.route('/static/:filename')
@@ -13,6 +25,7 @@ def index():
   global mumbleJSON
   users = []
   mumbleJSON = json.loads(urllib.urlopen("http://aypsela.servegame.com/mumble-django/mumble/embed/1.json").read())
+  server_info["uptime"] = GetInHMS(mumbleJSON["x_uptime"])
   for user in mumbleJSON['root']['users']:
     users.append([user['name'], user['selfMute'], user['selfDeaf'], user['userid']])
   output = usersHTML()
@@ -24,6 +37,7 @@ def channelHTML(channel):
   users = []
   global mumbleJSON
   mumbleJSON = json.loads(urllib.urlopen("http://aypsela.servegame.com/mumble-django/mumble/embed/1.json").read())
+  server_info["uptime"] = GetInHMS(mumbleJSON["x_uptime"])
   for user in mumbleJSON['root']['channels'][int(channel)]['users']:
     users.append([user['name'], user['selfMute'], user['selfDeaf'], user['userid']])
   output = usersHTML(channel)
@@ -80,6 +94,8 @@ def usersHTML(channel='root'):
     Made by <a href="http://github.com/mlaugharn" alt="Marc Laugharn">mlaugharn</a> and <a href="http://github.com/atamis" alt="Andrew Amis">atamis</a><br>
 """
   output += "Generated at " + str(datetime.datetime.now())
+  print(server_info)
+  output += "<br />" + "Mumble server online for " + server_info["uptime"]
   output += """
   </footer>
   <script type="text/javascript">
